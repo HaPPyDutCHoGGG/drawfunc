@@ -16,6 +16,28 @@ namespace drawfunctionn
         public frmMain()
         {
             InitializeComponent();
+
+            var xFuncChange = new []
+            {
+                "|k|x| + b|",
+                "kx + b",
+                "k|x| + b",
+                "|kx + b|",
+                "k|x| + b",
+                "|kx + b|",
+                "|k|x| + b|",
+                "a*x^2 + b*x + c"
+            };
+            xFuncSelector.Items.AddRange(xFuncChange);
+            xFuncSelector.SelectedIndex = 0;
+
+            var yFuncChange = new[]
+            {
+                "y",
+                "|y|",
+            };
+            yFuncSelector.Items.AddRange(yFuncChange);
+            yFuncSelector.SelectedIndex = 0;
         }
 
         private void GraphWind_Click(object sender, EventArgs e)
@@ -42,36 +64,12 @@ namespace drawfunctionn
 
         }
 
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            Graphics g = graphWind.CreateGraphics();    //i dont know wat its//
-            Pen myPen = new Pen(Color.Blue);
-            int nmbInterv = 100;//100//
-                float xmin = 0;//0//
-                float xmax = 2;//2//
-                float ymin = 0;//0//
-                float ymax = 4;//4//
-            float xstep = (xmax - xmin) / nmbInterv;
-            float kx = graphWind.Width / xmax;
-            float ky = graphWind.Height / ymax;
-            float x1 = xmin;
-            float y1 = x1 * x1, x2, y2;
-            for(int i = 0; i < nmbInterv; i++)
-            {
-                x2 = x1 + xstep;
-                y2 = x2 * x2;
-                g.DrawLine(myPen, kx * x1, graphWind.Height - ky * y1, kx * x2, graphWind.Height - ky * y2);
-                x1 = x2;
-                y1 = y2;
-            }
-        }
+        private double _xMin = -5;
+        private double _xMax = 5;
+        private double _yMin = -5;
+        private double _yMax = 5;
 
-        private double _xMin = -3;
-        private double _xMax = 3;
-        private double _yMin = -3;
-        private double _yMax = 3;
-
-        private void Button2_Click(object sender, EventArgs e) //the line
+        private void Button2_Click(object sender, EventArgs e) //the line !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         {
             _b = double.Parse(_lineB.Text);
             _k = double.Parse(_lineK.Text);
@@ -94,6 +92,21 @@ namespace drawfunctionn
                 prevH = h;
             }
         }
+        private void drawFunction_module(Func<double, double> func)
+        {
+            var g = graphWind.CreateGraphics();
+
+            int w = 0;
+            float prevH = calcHeight(func, w);
+
+            for (w = 1; w < graphWind.Width; w++)
+            {
+                var h = calcHeight(func, w);
+
+                g.DrawLine(_redPen, w - 1, prevH, w, h);
+                prevH = h;
+            }
+        }
 
         private float calcHeight(Func<double, double> func, int w)
         {
@@ -104,7 +117,7 @@ namespace drawfunctionn
             return (float)(graphWind.Height * (1 - (y - _yMin) / (_yMax - _yMin)));
         }
 
-        private void Button3_Click(object sender, EventArgs e)
+        private void Button3_Click(object sender, EventArgs e) //square function !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         {
             _a = double.Parse(squareA.Text);
             _b = double.Parse(squareB.Text);
@@ -121,6 +134,7 @@ namespace drawfunctionn
 
         private Pen _blackPen = new Pen(Color.Black);
         private Pen _bluePen = new Pen(Color.Blue);
+        private Pen _redPen = new Pen(Color.Red);
 
         private void GraphWind_Paint(object sender, PaintEventArgs e)
         {
@@ -155,9 +169,15 @@ namespace drawfunctionn
         private double _c = 1;
         private double _k = 1;
 
-        private double lineFunc(double x)
+        public string LineFunc_change { get; private set; }
+
+        private double lineFunc(double x)               //functions!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         {
             return _k * x + _b;
+        }
+        private double lineFunc_moduleX(double x)
+        {
+            return _k * Math.Abs(x) + _b;
         }
 
         private double squareFunc(double x)
@@ -165,24 +185,53 @@ namespace drawfunctionn
             return x * (_a * x + _b) + _c;
         }
 
-        private void  FrmMain_Load(object sender, EventArgs e)
+        private Func<double, double> xFuncByName(string name)
         {
-            
+            switch(name)
+            {
+                case "a*x^2 + b*x + c":
+                    return squareFunc;
+
+                case "|k|x| + b|":
+                    return (x) => Math.Abs(_k * Math.Abs(x) + _b);
+
+                case "kx + b":
+                    return lineFunc;
+                case "k|x| + b":
+                    return lineFunc_moduleX;
+                //"|kx + b|",
+                //"k|x| + b",
+                //"|kx + b|",
+                //"|k|x| + b|",
+
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
-        private void TextBox2_TextChanged(object sender, EventArgs e)
+        private void BtnDraw_Click(object sender, EventArgs e)
         {
-            double b = double.Parse(squareB.Text);//for parabola   
+            var xFuncName = (string)xFuncSelector.SelectedItem;
+            var yFuncName = (string)yFuncSelector.SelectedItem;
+
+            if (xFuncName == null || yFuncName == null)
+                return;
+
+            var xFunc = xFuncByName(xFuncName);
+
+            _a = (double)nudA.Value;
+            _b = (double)nudB.Value;
+            _c = (double)nudC.Value;
+            _k = (double)nudK.Value;
+
+            drawFunction(xFunc);
+
+            //drawFunction((x) => -xFunc(x));
         }
 
-        private void TextBox5_TextChanged(object sender, EventArgs e)
-        {
-            double b1 = double.Parse(_lineK.Text);//for line
-        }
-        
-        private void Label3_Click(object sender, EventArgs e)
-        {
-
-        }
     }
-}
+        
+ }
+
+    
+
