@@ -13,31 +13,33 @@ namespace drawfunctionn
     public partial class frmMain : Form //the CENTRE :(graphWind.Width / 2; graphWind.Height / 2) for programm; (0;0) for user//
                                                         
     {
+        private Dictionary<string, Func<double, double>> _funcList;
+
         public frmMain()
         {
             InitializeComponent();
-
-            var xFuncChange = new []
+            _funcList = new Dictionary<string, Func<double, double>>()
             {
-                "kx + b",
-                "|k|x| + b|",
-                "k|x| + b",
-                "|kx + b|",
+                { "kx + b", (x) => _k * x + _b },
+                { "|k|x| + b|", (x) => Math.Abs(_k* Math.Abs(x) + _b) },
+                { "k|x| + b", (x) => _k* Math.Abs(x) + _b },
+                { "|kx + b|", (x) => Math.Abs(_k* x + _b) },
 
-                "a*x^2+b*x+c",
-                "a*|x|^2 + b*x + c",
-                "a*|x|^2 + b*|x| + c",
-                "a*x^2 + b*|x| + c",
-                "|a*x^2 + b*x + c|",
-                "|a*|x|^2 + b*|x| + c|",
-                "|a*|x|^2 + b*x + c|",
-                "|a*x^2 + b*|x| + c|",
+                { "a*x^2+b*x+c", (x) => x * (_a * x + _b) + _c },
+                //{ "a*|x|^2 + b*x + c",
+                //{ "a*|x|^2 + b*|x| + c",
+                { "a*x^2 + b*|x| + c", (x) => _a* Math.Pow(x,2) + _b* Math.Abs(x) + _c },
+                { "|a*x^2 + b*x + c|", (x) => Math.Abs(_a* Math.Pow(x, 2) + _b* x + _c) },
+                //{ "|a*|x|^2 + b*|x| + c|",
+                { "|a*|x|^2 + b*x + c|", (x) => Math.Abs(_a* Math.Abs(Math.Pow(x, 2)) + _b* Math.Abs(x) + _c) },
+                { "|a*x^2 + b*|x| + c|", (x) => Math.Abs(_a* Math.Pow(x, 2) + _b* Math.Abs(Math.Abs(x)) + _c) },
 
-                "sin| x |",
-                "|sin x|",
-                "|sin| x ||",
+                { "a * sin| x |", (x) => _a * Math.Sin(Math.Abs(x)) }, 
+                { "a * |sin x|", (x) => _a * Math.Abs(Math.Sin(x)) }, 
+                { "a * |sin| x ||", (x) => _a * Math.Abs(Math.Sin(Math.Abs(x))) }
             };
-            xFuncSelector.Items.AddRange(xFuncChange);
+
+            xFuncSelector.Items.AddRange(_funcList.Keys.ToArray());
             xFuncSelector.SelectedIndex = 0;
 
             var yFuncChange = new[]
@@ -193,48 +195,7 @@ namespace drawfunctionn
 
         private Func<double, double> xFuncByName(string name)
         {
-            switch(name)
-            {
-                case "kx + b":
-                    return lineFunc;
-                case "|k|x| + b|":
-                    return (x) => Math.Abs(_k * Math.Abs(x) + _b);                  //only modules for kx+b/прямые
-                case "k|x| + b":
-                    return (x) => _k * Math.Abs(x) + _b;
-                case "|kx + b|":
-                    return (x) => Math.Abs(_k * x + _b);
-
-
-                case "a*x^2+b*x+c":
-                    return squareFunc;
-                //case "a*|x|^2+b*x+c":                                              //only for parabolas/параболы  
-                //    return (x) => _a * Math.Abs(Math.Pow(x, 2)) + _b * x + _c; ;
-                //case "a*|x|^2 + b*|x| + c":
-                //    return (x) => _a * Math.Abs(Math.Pow(x, 2)) + _b * Math.Abs(x) + _c; ;
-                case "a*x^2 + b*|x| + c":
-                    return (x) => _a * Math.Pow(x,2) + _b * Math.Abs(x) + _c;
-                case "|a*x^2 + b*x + c|":
-                    return (x) => Math.Abs(_a * Math.Pow(x, 2) + _b * x + _c);
-                //case "|a*|x|^2 + b*|x| + c|":
-                //    return (x) => Math.Abs(_a * Math.Abs(Math.Pow(x, 2)) + _b * Math.Abs(Math.Abs(x)) + _c);
-                case "|a*|x|^2 + b*x + c|":
-                    return (x) => Math.Abs(_a * Math.Abs(Math.Pow(x, 2)) + _b * Math.Abs(x) + _c);
-                case "|a*x^2 + b*|x| + c|":
-                    return (x) => Math.Abs(_a * Math.Pow(x, 2) + _b * Math.Abs(Math.Abs(x)) + _c);
-
-
-                case "sin| x |":
-                    return (x) => Math.Abs(Math.Sin(x)) * _a;                       //only for sinusoids/синусоиды
-                case "|sin x|":
-                    return (x) => Math.Abs(Math.Sin(x) * _a);
-                case "|sin| x ||":
-                    return (x) => Math.Abs(Math.Abs(Math.Sin(x) * _a));
-
-
-                default:
-                    throw new NotImplementedException();
-                                                                
-            }
+            return _funcList[name];
         }
 
         private void BtnDraw_Click(object sender, EventArgs e)
@@ -254,7 +215,8 @@ namespace drawfunctionn
 
             drawFunction(xFunc);
 
-            //drawFunction((x) => -xFunc(x));
+            if(yFuncName == "|y|")
+                drawFunction((x) => -xFunc(x));
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
