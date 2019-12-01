@@ -19,14 +19,23 @@ namespace drawfunctionn
 
             var xFuncChange = new []
             {
-                "|k|x| + b|",
                 "kx + b",
-                "k|x| + b",
-                "|kx + b|",
-                "k|x| + b",
-                "|kx + b|",
                 "|k|x| + b|",
-                "a*x^2 + b*x + c"
+                "k|x| + b",
+                "|kx + b|",
+
+                "a*x^2+b*x+c",
+                "a*|x|^2 + b*x + c",
+                "a*|x|^2 + b*|x| + c",
+                "a*x^2 + b*|x| + c",
+                "|a*x^2 + b*x + c|",
+                "|a*|x|^2 + b*|x| + c|",
+                "|a*|x|^2 + b*x + c|",
+                "|a*x^2 + b*|x| + c|",
+
+                "sin| x |",
+                "|sin x|",
+                "|sin| x ||",
             };
             xFuncSelector.Items.AddRange(xFuncChange);
             xFuncSelector.SelectedIndex = 0;
@@ -69,10 +78,10 @@ namespace drawfunctionn
         private double _yMin = -5;
         private double _yMax = 5;
 
-        private void Button2_Click(object sender, EventArgs e) //the line !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        private void Button2_Click(object sender, EventArgs e) //the line 
         {
-            _b = double.Parse(_lineB.Text);
-            _k = double.Parse(_lineK.Text);
+            _b = (double)nudB.Value;
+            _k = (double)nudK.Value;
 
             drawFunction(lineFunc);
         }
@@ -92,6 +101,7 @@ namespace drawfunctionn
                 prevH = h;
             }
         }
+
         private void drawFunction_module(Func<double, double> func)
         {
             var g = graphWind.CreateGraphics();
@@ -117,11 +127,11 @@ namespace drawfunctionn
             return (float)(graphWind.Height * (1 - (y - _yMin) / (_yMax - _yMin)));
         }
 
-        private void Button3_Click(object sender, EventArgs e) //square function !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        private void Button3_Click(object sender, EventArgs e) //square function 
         {
-            _a = double.Parse(squareA.Text);
-            _b = double.Parse(squareB.Text);
-            _c = double.Parse(squareC.Text);
+            _a = (double)nudA.Value;
+            _b = (double)nudB.Value;
+            _c = (double)nudC.Value;
 
             drawFunction(squareFunc);
         }
@@ -171,41 +181,59 @@ namespace drawfunctionn
 
         public string LineFunc_change { get; private set; }
 
-        private double lineFunc(double x)               //functions!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        private double lineFunc(double x)               //functions
         {
             return _k * x + _b;
-        }
-        private double lineFunc_moduleX(double x)
-        {
-            return _k * Math.Abs(x) + _b;
-        }
+        }       
 
         private double squareFunc(double x)
         {
             return x * (_a * x + _b) + _c;
-        }
+        }                                               //functions
 
         private Func<double, double> xFuncByName(string name)
         {
             switch(name)
             {
-                case "a*x^2 + b*x + c":
-                    return squareFunc;
-
-                case "|k|x| + b|":
-                    return (x) => Math.Abs(_k * Math.Abs(x) + _b);
-
                 case "kx + b":
                     return lineFunc;
+                case "|k|x| + b|":
+                    return (x) => Math.Abs(_k * Math.Abs(x) + _b);                  //only modules for kx+b/прямые
                 case "k|x| + b":
-                    return lineFunc_moduleX;
-                //"|kx + b|",
-                //"k|x| + b",
-                //"|kx + b|",
-                //"|k|x| + b|",
+                    return (x) => _k * Math.Abs(x) + _b;
+                case "|kx + b|":
+                    return (x) => Math.Abs(_k * x + _b);
+
+
+                case "a*x^2+b*x+c":
+                    return squareFunc;
+                //case "a*|x|^2+b*x+c":                                              //only for parabolas/параболы  
+                //    return (x) => _a * Math.Abs(Math.Pow(x, 2)) + _b * x + _c; ;
+                //case "a*|x|^2 + b*|x| + c":
+                //    return (x) => _a * Math.Abs(Math.Pow(x, 2)) + _b * Math.Abs(x) + _c; ;
+                case "a*x^2 + b*|x| + c":
+                    return (x) => _a * Math.Pow(x,2) + _b * Math.Abs(x) + _c;
+                case "|a*x^2 + b*x + c|":
+                    return (x) => Math.Abs(_a * Math.Pow(x, 2) + _b * x + _c);
+                //case "|a*|x|^2 + b*|x| + c|":
+                //    return (x) => Math.Abs(_a * Math.Abs(Math.Pow(x, 2)) + _b * Math.Abs(Math.Abs(x)) + _c);
+                case "|a*|x|^2 + b*x + c|":
+                    return (x) => Math.Abs(_a * Math.Abs(Math.Pow(x, 2)) + _b * Math.Abs(x) + _c);
+                case "|a*x^2 + b*|x| + c|":
+                    return (x) => Math.Abs(_a * Math.Pow(x, 2) + _b * Math.Abs(Math.Abs(x)) + _c);
+
+
+                case "sin| x |":
+                    return (x) => Math.Abs(Math.Sin(x)) * _a;                       //only for sinusoids/синусоиды
+                case "|sin x|":
+                    return (x) => Math.Abs(Math.Sin(x) * _a);
+                case "|sin| x ||":
+                    return (x) => Math.Abs(Math.Abs(Math.Sin(x) * _a));
+
 
                 default:
                     throw new NotImplementedException();
+                                                                
             }
         }
 
@@ -229,6 +257,19 @@ namespace drawfunctionn
             //drawFunction((x) => -xFunc(x));
         }
 
+        private void FrmMain_Load(object sender, EventArgs e)
+        {
+
+        }
+        private double lineFunc_SINX(double x)
+        {
+            return Math.Sin(x) * _a;
+        }
+        private void Button4_Click(object sender, EventArgs e) //sinusoids function
+        {
+            _a = (double)nudA.Value;
+            drawFunction(lineFunc_SINX);
+        }
     }
         
  }
