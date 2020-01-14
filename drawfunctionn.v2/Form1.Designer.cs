@@ -45,6 +45,7 @@
             this.nudK = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.graphWind)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudA)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudB)).BeginInit();
@@ -268,11 +269,23 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.Button4_Click);
             // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(869, 574);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(120, 71);
+            this.button1.TabIndex = 28;
+            this.button1.Text = "Clear";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1018, 823);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.nudK);
             this.Controls.Add(this.label11);
@@ -322,6 +335,7 @@
         private System.Windows.Forms.NumericUpDown nudK;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button1;
     }
 }
 

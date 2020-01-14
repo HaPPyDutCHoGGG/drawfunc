@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace drawfunctionn
 {
     public partial class frmMain : Form //the CENTRE :(graphWind.Width / 2; graphWind.Height / 2) for programm; (0;0) for user//
-                                                        
+
     {
         private Dictionary<string, Func<double, double>> _funcList;
 
@@ -25,17 +25,14 @@ namespace drawfunctionn
                 { "k|x| + b", (x) => _k* Math.Abs(x) + _b },
                 { "|kx + b|", (x) => Math.Abs(_k* x + _b) },
 
-                { "a*x^2+b*x+c", (x) => x * (_a * x + _b) + _c },
-                //{ "a*|x|^2 + b*x + c",
-                //{ "a*|x|^2 + b*|x| + c",
+                { "a*x^2+b*x+c", (x) => x * (_a * x + _b) + _c },               
                 { "a*x^2 + b*|x| + c", (x) => _a* Math.Pow(x,2) + _b* Math.Abs(x) + _c },
                 { "|a*x^2 + b*x + c|", (x) => Math.Abs(_a* Math.Pow(x, 2) + _b* x + _c) },
-                //{ "|a*|x|^2 + b*|x| + c|",
                 { "|a*|x|^2 + b*x + c|", (x) => Math.Abs(_a* Math.Abs(Math.Pow(x, 2)) + _b* Math.Abs(x) + _c) },
                 { "|a*x^2 + b*|x| + c|", (x) => Math.Abs(_a* Math.Pow(x, 2) + _b* Math.Abs(Math.Abs(x)) + _c) },
 
-                { "a * sin| x |", (x) => _a * Math.Sin(Math.Abs(x)) }, 
-                { "a * |sin x|", (x) => _a * Math.Abs(Math.Sin(x)) }, 
+                { "a * sin| x |", (x) => _a * Math.Sin(Math.Abs(x)) },
+                { "a * |sin x|", (x) => _a * Math.Abs(Math.Sin(x)) },
                 { "a * |sin| x ||", (x) => _a * Math.Abs(Math.Sin(Math.Abs(x))) }
             };
 
@@ -58,27 +55,27 @@ namespace drawfunctionn
             // graphWind.Width
             // graphWind.Height
 
-            Pen myPen = new Pen(Color.Black);                                                                                                    
-                float xmin = 0;
-                float ymin = graphWind.Height / 2;
-                float xmax = graphWind.Width;
-                float ymax = graphWind.Height / 2;
+            Pen myPen = new Pen(Color.Black);
+            float xmin = 0;
+            float ymin = graphWind.Height / 2;
+            float xmax = graphWind.Width;
+            float ymax = graphWind.Height / 2;
             g.DrawLine(myPen, xmin, ymin, xmax, ymax);
 
-                                                        //horizontal axis Y//
-            Pen myPen1 = new Pen(Color.Black);           
-                float xmin1 = graphWind.Width / 2;
-                float ymin1 = 0;
-                float xmax1 = graphWind.Width / 2;
-                float ymax1 = graphWind.Height;
+            //horizontal axis Y//
+            Pen myPen1 = new Pen(Color.Black);
+            float xmin1 = graphWind.Width / 2;
+            float ymin1 = 0;
+            float xmax1 = graphWind.Width / 2;
+            float ymax1 = graphWind.Height;
             g.DrawLine(myPen1, xmin1, ymin1, xmax1, ymax1);
 
         }
 
-        private double _xMin = -5;
-        private double _xMax = 5;
-        private double _yMin = -5;
-        private double _yMax = 5;
+        private double _xMin = -10;
+        private double _xMax = 10;
+        private double _yMin = -10;
+        private double _yMax = 10;
 
         private void Button2_Click(object sender, EventArgs e) //the line 
         {
@@ -140,7 +137,7 @@ namespace drawfunctionn
 
         private void GraphWind_Resize(object sender, EventArgs e)
         {
-           
+
 
         }
 
@@ -150,7 +147,7 @@ namespace drawfunctionn
 
         private void GraphWind_Paint(object sender, PaintEventArgs e)
         {
-           
+
         }
 
         private void GraphWind_SizeChanged(object sender, EventArgs e)
@@ -162,20 +159,20 @@ namespace drawfunctionn
 
             g.Clear(Color.White);
 
-            float xmin = 0;                             
+            float xmin = 0;
             float ymin = graphWind.Height / 2;
             float xmax = graphWind.Width;
             float ymax = graphWind.Height / 2;
             g.DrawLine(_blackPen, xmin, ymin, xmax, ymax);
 
-                                                         //axis Y//
-            float xmin1 = graphWind.Width / 2;                          
+            //axis Y//
+            float xmin1 = graphWind.Width / 2;
             float ymin1 = 0;
             float xmax1 = graphWind.Width / 2;
             float ymax1 = graphWind.Height;
             g.DrawLine(_blackPen, xmin1, ymin1, xmax1, ymax1);
         }
-        
+
         private double _a = 1;
         private double _b = 1;
         private double _c = 1;
@@ -186,8 +183,11 @@ namespace drawfunctionn
         private double lineFunc(double x)               //functions
         {
             return _k * x + _b;
-        }       
-
+        }
+        private double lineFunc_SINX(double x)
+        {
+            return Math.Sin(x) * _a;
+        }
         private double squareFunc(double x)
         {
             return x * (_a * x + _b) + _c;
@@ -213,28 +213,27 @@ namespace drawfunctionn
             _c = (double)nudC.Value;
             _k = (double)nudK.Value;
 
-            drawFunction(xFunc);
+            drawFunction_module(xFunc);
 
-            if(yFuncName == "|y|")
-                drawFunction((x) => -xFunc(x));
+            if (yFuncName == "|y|")
+                drawFunction_module((x) => -xFunc(x));
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
 
-        }
-        private double lineFunc_SINX(double x)
-        {
-            return Math.Sin(x) * _a;
-        }
+        }       
         private void Button4_Click(object sender, EventArgs e) //sinusoids function
         {
             _a = (double)nudA.Value;
             drawFunction(lineFunc_SINX);
         }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            var g = graphWind.CreateGraphics();
+            g.Clear(Color.White);
+        }
     }
-        
- }
 
-    
-
+}

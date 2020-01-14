@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанных со сборкой.
-[assembly: AssemblyTitle("drawfunctionn")]
+[assembly: AssemblyTitle("drawfunc_finalversion")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("drawfunctionn")]
+[assembly: AssemblyProduct("drawfunc_finalversion")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("ea631924-c37b-4df2-9be7-51ef50a3f0d0")]
+[assembly: Guid("6465651d-3e4f-448d-baf4-fe0204c96512")]
 
 // Сведения о версии сборки состоят из указанных ниже четырех значений:
 //

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace drawfunctionn.Properties
+namespace drawfunc_finalversion.Properties
 {
 
 
