@@ -82,34 +82,45 @@ namespace drawfunctionn
             _b = (double)nudB.Value;
             _k = (double)nudK.Value;
 
-            drawFunction(lineFunc, false);
+            drawFunction(lineFunc);
         }
 
-        private void drawFunction(Func<double, double> func, bool module)
+        private void drawFunction(Func<double, double> func, ClipY clip = ClipY.None)
         {
             var g = graphWind.CreateGraphics();
 
             int w = 0;
-            var prevH = calcHeight(func, w, module);
+            var prevH = calcHeight(func, w, clip);
 
             for (w = 1; w < graphWind.Width; w++)
             {
-                var h = calcHeight(func, w, module);
+                var h = calcHeight(func, w, clip);
                 if(prevH.HasValue && h.HasValue)
                     g.DrawLine(_redPen, w - 1, prevH.Value, w, h.Value);
                 prevH = h;
             }
         }
 
-        private float? calcHeight(Func<double, double> func, int w, bool module)
+        private float? calcHeight(Func<double, double> func, int w, ClipY clip)
         {
             var x = _xMin + (_xMax - _xMin) * w / graphWind.Width;
 
             var y = func(x);
-            if (module && y < 0)
+
+            if(clip == ClipY.Up && y > 0)
+                return null;
+
+            if (clip == ClipY.Down && y < 0)
                 return null;
 
             return (float)(graphWind.Height * (1 - (y - _yMin) / (_yMax - _yMin)));
+        }
+
+        public enum ClipY
+        {
+            None,
+            Up,
+            Down
         }
 
         private void Button3_Click(object sender, EventArgs e) //square function 
@@ -118,7 +129,7 @@ namespace drawfunctionn
             _b = (double)nudB.Value;
             _c = (double)nudC.Value;
 
-            drawFunction(squareFunc, false);
+            drawFunction(squareFunc);
         }
 
         private void GraphWind_Resize(object sender, EventArgs e)
@@ -199,12 +210,15 @@ namespace drawfunctionn
             _c = (double)nudC.Value;
             _k = (double)nudK.Value;
 
-            var module = yFuncName == "|y|";
-
-            drawFunction(xFunc, module);
-
-            if (module)
-                drawFunction((x) => -xFunc(x), module);
+            if(yFuncName == "|y|")
+            {
+                drawFunction(xFunc, ClipY.Down);
+                drawFunction((x) => -xFunc(x), ClipY.Up);
+            }
+            else
+            {
+                drawFunction(xFunc, ClipY.None);
+            }
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -214,7 +228,7 @@ namespace drawfunctionn
         private void Button4_Click(object sender, EventArgs e) //sinusoids function
         {
             _a = (double)nudA.Value;
-            drawFunction(lineFunc_SINX, false);
+            drawFunction(lineFunc_SINX);
         }
 
         private void Button1_Click(object sender, EventArgs e)
