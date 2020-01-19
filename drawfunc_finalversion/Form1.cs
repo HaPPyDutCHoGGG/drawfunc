@@ -82,46 +82,32 @@ namespace drawfunctionn
             _b = (double)nudB.Value;
             _k = (double)nudK.Value;
 
-            drawFunction(lineFunc);
+            drawFunction(lineFunc, false);
         }
 
-        private void drawFunction(Func<double, double> func)
+        private void drawFunction(Func<double, double> func, bool module)
         {
             var g = graphWind.CreateGraphics();
 
             int w = 0;
-            float prevH = calcHeight(func, w);
+            var prevH = calcHeight(func, w, module);
 
             for (w = 1; w < graphWind.Width; w++)
             {
-                var h = calcHeight(func, w);
-
-                g.DrawLine(_bluePen, w - 1, prevH, w, h);
+                var h = calcHeight(func, w, module);
+                if(prevH.HasValue && h.HasValue)
+                    g.DrawLine(_redPen, w - 1, prevH.Value, w, h.Value);
                 prevH = h;
             }
         }
 
-        private void drawFunction_module(Func<double, double> func)
-        {
-            var g = graphWind.CreateGraphics();
-
-            int w = 0;
-            float prevH = calcHeight(func, w);
-
-            for (w = 1; w < graphWind.Width; w++)
-            {
-                var h = calcHeight(func, w);
-
-                g.DrawLine(_redPen, w - 1, prevH, w, h);
-                prevH = h;
-            }
-        }
-
-        private float calcHeight(Func<double, double> func, int w)
+        private float? calcHeight(Func<double, double> func, int w, bool module)
         {
             var x = _xMin + (_xMax - _xMin) * w / graphWind.Width;
 
             var y = func(x);
+            if (module && y < 0)
+                return null;
 
             return (float)(graphWind.Height * (1 - (y - _yMin) / (_yMax - _yMin)));
         }
@@ -132,7 +118,7 @@ namespace drawfunctionn
             _b = (double)nudB.Value;
             _c = (double)nudC.Value;
 
-            drawFunction(squareFunc);
+            drawFunction(squareFunc, false);
         }
 
         private void GraphWind_Resize(object sender, EventArgs e)
@@ -213,10 +199,12 @@ namespace drawfunctionn
             _c = (double)nudC.Value;
             _k = (double)nudK.Value;
 
-            drawFunction_module(xFunc);
+            var module = yFuncName == "|y|";
 
-            if (yFuncName == "|y|")
-                drawFunction_module((x) => -xFunc(x));
+            drawFunction(xFunc, module);
+
+            if (module)
+                drawFunction((x) => -xFunc(x), module);
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -226,7 +214,7 @@ namespace drawfunctionn
         private void Button4_Click(object sender, EventArgs e) //sinusoids function
         {
             _a = (double)nudA.Value;
-            drawFunction(lineFunc_SINX);
+            drawFunction(lineFunc_SINX, false);
         }
 
         private void Button1_Click(object sender, EventArgs e)
