@@ -31,6 +31,7 @@ namespace drawfunctionn
                 { "|a*|x|^2 + b*x + c|", (x) => Math.Abs(_a* Math.Abs(Math.Pow(x, 2)) + _b* Math.Abs(x) + _c) },
                 { "|a*x^2 + b*|x| + c|", (x) => Math.Abs(_a* Math.Pow(x, 2) + _b* Math.Abs(Math.Abs(x)) + _c) },
 
+                { "a * sin x ", (x) => _a * Math.Sin(x) },
                 { "a * sin| x |", (x) => _a * Math.Sin(Math.Abs(x)) },
                 { "a * |sin x|", (x) => _a * Math.Abs(Math.Sin(x)) },
                 { "a * |sin| x ||", (x) => _a * Math.Abs(Math.Sin(Math.Abs(x))) }
@@ -82,9 +83,24 @@ namespace drawfunctionn
             _b = (double)nudB.Value;
             _k = (double)nudK.Value;
 
-            drawFunction(lineFunc);
+            drawFunction_base(lineFunc);
         }
+        private void drawFunction_base(Func<double, double> func, ClipY clip = ClipY.None)
+        {
+            var g = graphWind.CreateGraphics();
 
+            int w = 0;
+            var prevH = calcHeight(func, w, clip);
+
+            for (w = 1; w < graphWind.Width; w++)
+            {
+                var h = calcHeight(func, w, clip);
+                if (prevH.HasValue && h.HasValue)
+                    g.DrawLine(_bluePen, w, prevH.Value, w, h.Value);
+                prevH = h;
+
+            }
+        }
         private void drawFunction(Func<double, double> func, ClipY clip = ClipY.None)
         {
             var g = graphWind.CreateGraphics();
@@ -96,8 +112,9 @@ namespace drawfunctionn
             {
                 var h = calcHeight(func, w, clip);
                 if(prevH.HasValue && h.HasValue)
-                    g.DrawLine(_redPen, w - 1, prevH.Value, w, h.Value);
+                    g.DrawLine(_redPen, w, prevH.Value, w, h.Value);
                 prevH = h;
+                
             }
         }
 
@@ -129,7 +146,7 @@ namespace drawfunctionn
             _b = (double)nudB.Value;
             _c = (double)nudC.Value;
 
-            drawFunction(squareFunc);
+            drawFunction_base(squareFunc);
         }
 
         private void GraphWind_Resize(object sender, EventArgs e)
@@ -228,13 +245,36 @@ namespace drawfunctionn
         private void Button4_Click(object sender, EventArgs e) //sinusoids function
         {
             _a = (double)nudA.Value;
-            drawFunction(lineFunc_SINX);
+            drawFunction_base(lineFunc_SINX);
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
             var g = graphWind.CreateGraphics();
             g.Clear(Color.White);
+        }
+
+        private void Draw_axes_Click(object sender, EventArgs e)
+        {
+             Graphics g = graphWind.CreateGraphics();    //horizontal axis X//
+
+            // graphWind.Width
+            // graphWind.Height
+
+            Pen myPen = new Pen(Color.Black);
+            float xmin = 0;
+            float ymin = graphWind.Height / 2;
+            float xmax = graphWind.Width;
+            float ymax = graphWind.Height / 2;
+            g.DrawLine(myPen, xmin, ymin, xmax, ymax);
+
+            //horizontal axis Y//
+            Pen myPen1 = new Pen(Color.Black);
+            float xmin1 = graphWind.Width / 2;
+            float ymin1 = 0;
+            float xmax1 = graphWind.Width / 2;
+            float ymax1 = graphWind.Height;
+            g.DrawLine(myPen1, xmin1, ymin1, xmax1, ymax1);
         }
     }
 
