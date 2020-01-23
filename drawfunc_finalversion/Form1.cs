@@ -20,21 +20,25 @@ namespace drawfunctionn
             InitializeComponent();
             _funcList = new Dictionary<string, Func<double, double>>()
             {
-                { "kx + b", (x) => _k * x + _b },
-                { "|k|x| + b|", (x) => Math.Abs(_k* Math.Abs(x) + _b) },
+                { "kx + b", (x) => _k * x + _b },               
                 { "k|x| + b", (x) => _k* Math.Abs(x) + _b },
                 { "|kx + b|", (x) => Math.Abs(_k* x + _b) },
+                { "|k|x| + b|", (x) => Math.Abs(_k* Math.Abs(x) + _b) },            
 
                 { "a*x^2+b*x+c", (x) => x * (_a * x + _b) + _c },               
                 { "a*x^2 + b*|x| + c", (x) => _a* Math.Pow(x,2) + _b* Math.Abs(x) + _c },
                 { "|a*x^2 + b*x + c|", (x) => Math.Abs(_a* Math.Pow(x, 2) + _b* x + _c) },
-                { "|a*|x|^2 + b*x + c|", (x) => Math.Abs(_a* Math.Abs(Math.Pow(x, 2)) + _b* Math.Abs(x) + _c) },
                 { "|a*x^2 + b*|x| + c|", (x) => Math.Abs(_a* Math.Pow(x, 2) + _b* Math.Abs(Math.Abs(x)) + _c) },
 
-                { "a * sin x ", (x) => _a * Math.Sin(x) },
-                { "a * sin| x |", (x) => _a * Math.Sin(Math.Abs(x)) },
-                { "a * |sin x|", (x) => _a * Math.Abs(Math.Sin(x)) },
-                { "a * |sin| x ||", (x) => _a * Math.Abs(Math.Sin(Math.Abs(x))) }
+                { "a * sin (kx) ", (x) => _a * Math.Sin(_k * x) },
+                { "a * sin (k*| x |)", (x) => _a * Math.Sin(_k * (Math.Abs(x))) },
+                { "a * |sin x|", (x) => _a * Math.Abs(Math.Sin(_k * x)) },
+                { "a * |sin| x ||", (x) => _a * Math.Abs(Math.Sin(_k * (Math.Abs(x)))) },
+
+                { "a / (kx + b)", (x) => _a / (_k * x  + _b)},
+                { "a / (k|x| + b)", (x) => _a / (_k * Math.Abs(x) + _b)},
+                { "a / |(kx + b)|", (x) => _a / Math.Abs(_k * x + _b)},
+                { "a / |(k|x| + b)|", (x) => _a / Math.Abs(_k * Math.Abs(x) + _b)},
             };
 
             xFuncSelector.Items.AddRange(_funcList.Keys.ToArray());
@@ -78,12 +82,38 @@ namespace drawfunctionn
         private double _yMin = -10;
         private double _yMax = 10;
 
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            var g = graphWind.CreateGraphics();
+            g.Clear(Color.White);
+        }
         private void Button2_Click(object sender, EventArgs e) //the line 
         {
             _b = (double)nudB.Value;
             _k = (double)nudK.Value;
 
             drawFunction_base(lineFunc);
+        }
+        private void Button3_Click(object sender, EventArgs e) //square function 
+        {
+            _a = (double)nudA.Value;
+            _b = (double)nudB.Value;
+            _c = (double)nudC.Value;
+
+            drawFunction_base(squareFunc);
+        }
+        private void Button4_Click(object sender, EventArgs e) //sinusoids function
+        {
+            _a = (double)nudA.Value;
+            drawFunction_base(lineFunc_SINX);
+        }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            _a = (double)nudA.Value;
+            _b = (double)nudB.Value;
+            _k = (double)nudK.Value;
+
+            drawFunction_base(hyperbolaFunc);
         }
         private void drawFunction_base(Func<double, double> func, ClipY clip = ClipY.None)
         {
@@ -110,16 +140,16 @@ namespace drawfunctionn
 
             for (w = 1; w < graphWind.Width; w++)
             {
-                var h = calcHeight(func, w, clip);
+                var h = calcHeight(func, w + 1, clip);
                 if(prevH.HasValue && h.HasValue)
-                    g.DrawLine(_redPen, w, prevH.Value, w, h.Value);
+                    g.DrawLine(_redPen, w + 1, prevH.Value, w, h.Value);
                 prevH = h;
                 
             }
         }
 
         private float? calcHeight(Func<double, double> func, int w, ClipY clip)
-        {
+        {  
             var x = _xMin + (_xMax - _xMin) * w / graphWind.Width;
 
             var y = func(x);
@@ -138,15 +168,6 @@ namespace drawfunctionn
             None,
             Up,
             Down
-        }
-
-        private void Button3_Click(object sender, EventArgs e) //square function 
-        {
-            _a = (double)nudA.Value;
-            _b = (double)nudB.Value;
-            _c = (double)nudC.Value;
-
-            drawFunction_base(squareFunc);
         }
 
         private void GraphWind_Resize(object sender, EventArgs e)
@@ -198,6 +219,10 @@ namespace drawfunctionn
         {
             return _k * x + _b;
         }
+        private double hyperbolaFunc(double x)
+        {
+            return _a / (_k * x + _b);
+        }
         private double lineFunc_SINX(double x)
         {
             return Math.Sin(x) * _a;
@@ -241,18 +266,7 @@ namespace drawfunctionn
         private void FrmMain_Load(object sender, EventArgs e)
         {
 
-        }       
-        private void Button4_Click(object sender, EventArgs e) //sinusoids function
-        {
-            _a = (double)nudA.Value;
-            drawFunction_base(lineFunc_SINX);
-        }
-
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            var g = graphWind.CreateGraphics();
-            g.Clear(Color.White);
-        }
+        }               
 
         private void Draw_axes_Click(object sender, EventArgs e)
         {
@@ -276,6 +290,8 @@ namespace drawfunctionn
             float ymax1 = graphWind.Height;
             g.DrawLine(myPen1, xmin1, ymin1, xmax1, ymax1);
         }
+
+       
     }
 
 }
