@@ -35,10 +35,11 @@ namespace drawfunctionn
                 { "a * |sin x|", (x) => _a * Math.Abs(Math.Sin(_k * x)) },
                 { "a * |sin| x ||", (x) => _a * Math.Abs(Math.Sin(_k * (Math.Abs(x)))) },
 
-                { "a / (kx + b)", (x) => _a / (_k * x  + _b)},
-                { "a / (k|x| + b)", (x) => _a / (_k * Math.Abs(x) + _b)},
-                { "a / |(kx + b)|", (x) => _a / Math.Abs(_k * x + _b)},
-                { "a / |(k|x| + b)|", (x) => _a / Math.Abs(_k * Math.Abs(x) + _b)},
+                { "a * cos (kx) ", (x) => _a * Math.Cos(_k * x) },
+                { "a * cos (k*| x |)", (x) => _a * Math.Cos(_k * (Math.Abs(x))) },
+                { "a * |cos x|", (x) => _a * Math.Abs(Math.Cos(_k * x)) },
+                { "a * |cos| x ||", (x) => _a * Math.Abs(Math.Cos(_k * (Math.Abs(x)))) },
+
             };
 
             xFuncSelector.Items.AddRange(_funcList.Keys.ToArray());
@@ -104,16 +105,13 @@ namespace drawfunctionn
         }
         private void Button4_Click(object sender, EventArgs e) //sinusoids function
         {
-            _a = (double)nudA.Value;
+            _k = (double)nudK.Value;
             drawFunction_base(lineFunc_SINX);
         }
         private void button5_Click(object sender, EventArgs e)
         {
-            _a = (double)nudA.Value;
-            _b = (double)nudB.Value;
             _k = (double)nudK.Value;
-
-            drawFunction_base(hyperbolaFunc);
+            drawFunction_base(lineFunc_COSX);
         }
         private void drawFunction_base(Func<double, double> func, ClipY clip = ClipY.None)
         {
@@ -142,7 +140,7 @@ namespace drawfunctionn
             {
                 var h = calcHeight(func, w + 1, clip);
                 if(prevH.HasValue && h.HasValue)
-                    g.DrawLine(_redPen, w + 1, prevH.Value, w, h.Value);
+                    g.DrawLine(_redPen, w + 2, prevH.Value, w, h.Value);
                 prevH = h;
                 
             }
@@ -219,13 +217,13 @@ namespace drawfunctionn
         {
             return _k * x + _b;
         }
-        private double hyperbolaFunc(double x)
-        {
-            return _a / (_k * x + _b);
-        }
         private double lineFunc_SINX(double x)
         {
-            return Math.Sin(x) * _a;
+            return Math.Sin(_k * x) * _a;
+        }
+        private double lineFunc_COSX(double x)
+        {
+            return Math.Cos(_k * x) * _a;
         }
         private double squareFunc(double x)
         {
@@ -290,8 +288,7 @@ namespace drawfunctionn
             float ymax1 = graphWind.Height;
             g.DrawLine(myPen1, xmin1, ymin1, xmax1, ymax1);
         }
-
-       
+        
     }
 
 }

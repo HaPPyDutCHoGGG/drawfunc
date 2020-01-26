@@ -267,7 +267,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(120, 24);
             this.button4.TabIndex = 27;
-            this.button4.Text = "y = sin X";
+            this.button4.Text = "y = a*sin (k*X)";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.Button4_Click);
             // 
@@ -295,12 +295,11 @@
             // 
             // button5
             // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button5.Location = new System.Drawing.Point(869, 122);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(120, 24);
             this.button5.TabIndex = 30;
-            this.button5.Text = "y = a / (kx + b)";
+            this.button5.Text = "y = a*cos (k*X)";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
