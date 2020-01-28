@@ -35,11 +35,12 @@ namespace drawfunctionn
                 { "a * |sin x|", (x) => _a * Math.Abs(Math.Sin(_k * x)) },
                 { "a * |sin| x ||", (x) => _a * Math.Abs(Math.Sin(_k * (Math.Abs(x)))) },
 
-                { "a * cos (kx) ", (x) => _a * Math.Cos(_k * x) },
-                { "a * cos (k*| x |)", (x) => _a * Math.Cos(_k * (Math.Abs(x))) },
-                { "a * |cos x|", (x) => _a * Math.Abs(Math.Cos(_k * x)) },
-                { "a * |cos| x ||", (x) => _a * Math.Abs(Math.Cos(_k * (Math.Abs(x)))) },
+                { "y = a*√(k*X + b)", (x) => _a * Math.Sqrt(_k * x + _b) },
+                { "y = a*√(k*|X| + b)", (x) => _a * Math.Sqrt(_k * Math.Abs(x) + _b) },
+                { "y = |a*√(k*X + b)|", (x) => Math.Abs(_a * Math.Sqrt(_k * x + _b)) },
+                { "y = |a*√(k*|X| + b)|", (x) => Math.Abs(_a * Math.Sqrt(_k * Math.Abs(x) + _b)) },
 
+  
             };
 
             xFuncSelector.Items.AddRange(_funcList.Keys.ToArray());
@@ -110,8 +111,10 @@ namespace drawfunctionn
         }
         private void button5_Click(object sender, EventArgs e)
         {
+            _a = (double)nudA.Value;
+            _b = (double)nudB.Value;
             _k = (double)nudK.Value;
-            drawFunction_base(lineFunc_COSX);
+            drawFunction_base(sqrtFunc);
         }
         private void drawFunction_base(Func<double, double> func, ClipY clip = ClipY.None)
         {
@@ -140,7 +143,7 @@ namespace drawfunctionn
             {
                 var h = calcHeight(func, w + 1, clip);
                 if(prevH.HasValue && h.HasValue)
-                    g.DrawLine(_redPen, w + 2, prevH.Value, w, h.Value);
+                    g.DrawLine(_redPen, w, prevH.Value, w, h.Value);
                 prevH = h;
                 
             }
@@ -221,14 +224,19 @@ namespace drawfunctionn
         {
             return Math.Sin(_k * x) * _a;
         }
-        private double lineFunc_COSX(double x)
-        {
-            return Math.Cos(_k * x) * _a;
-        }
         private double squareFunc(double x)
         {
             return x * (_a * x + _b) + _c;
-        }                                               //functions
+        }
+        private double sqrtFunc(double x)
+        {
+            return _a * Math.Sqrt(_k * x + _b);
+        }
+        private double hyperbolaFunc(double x)
+        {
+            return _a / (_k * x + _b);
+        }
+                                                        //functions
 
         private Func<double, double> xFuncByName(string name)
         {
@@ -288,7 +296,7 @@ namespace drawfunctionn
             float ymax1 = graphWind.Height;
             g.DrawLine(myPen1, xmin1, ymin1, xmax1, ymax1);
         }
-        
+
     }
 
 }

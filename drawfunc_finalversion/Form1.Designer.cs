@@ -99,7 +99,7 @@
             this.xFuncSelector.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.xFuncSelector.FormattingEnabled = true;
             this.xFuncSelector.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.xFuncSelector.Location = new System.Drawing.Point(869, 175);
+            this.xFuncSelector.Location = new System.Drawing.Point(869, 215);
             this.xFuncSelector.Name = "xFuncSelector";
             this.xFuncSelector.Size = new System.Drawing.Size(120, 95);
             this.xFuncSelector.TabIndex = 14;
@@ -108,7 +108,7 @@
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(869, 156);
+            this.label6.Location = new System.Drawing.Point(869, 196);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(21, 13);
             this.label6.TabIndex = 15;
@@ -295,11 +295,12 @@
             // 
             // button5
             // 
+            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button5.Location = new System.Drawing.Point(869, 122);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(120, 24);
             this.button5.TabIndex = 30;
-            this.button5.Text = "y = a*cos (k*X)";
+            this.button5.Text = "y = a / (k*X + b)";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
@@ -307,7 +308,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1018, 823);
+            this.ClientSize = new System.Drawing.Size(1018, 703);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.Draw_axes);
             this.Controls.Add(this.button1);
