@@ -48,6 +48,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.Draw_axes = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.graphWind)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudA)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudB)).BeginInit();
@@ -304,11 +306,29 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // textBox1
+            // 
+            this.textBox1.ForeColor = System.Drawing.Color.MediumBlue;
+            this.textBox1.Location = new System.Drawing.Point(12, 23);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(143, 20);
+            this.textBox1.TabIndex = 31;
+            // 
+            // textBox2
+            // 
+            this.textBox2.ForeColor = System.Drawing.Color.Red;
+            this.textBox2.Location = new System.Drawing.Point(12, 49);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(143, 20);
+            this.textBox2.TabIndex = 32;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1018, 703);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.Draw_axes);
             this.Controls.Add(this.button1);
@@ -364,6 +384,8 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button Draw_axes;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }
 

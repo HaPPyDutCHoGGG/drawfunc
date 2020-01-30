@@ -91,6 +91,8 @@ namespace drawfunctionn
         }
         private void Button2_Click(object sender, EventArgs e) //the line 
         {
+            textBox1.Text = "y = kx + b";
+
             _b = (double)nudB.Value;
             _k = (double)nudK.Value;
 
@@ -98,6 +100,8 @@ namespace drawfunctionn
         }
         private void Button3_Click(object sender, EventArgs e) //square function 
         {
+            textBox1.Text = "y = a*x ^ 2 + b*x + c";
+
             _a = (double)nudA.Value;
             _b = (double)nudB.Value;
             _c = (double)nudC.Value;
@@ -106,11 +110,16 @@ namespace drawfunctionn
         }
         private void Button4_Click(object sender, EventArgs e) //sinusoids function
         {
+            textBox1.Text = "y = a * sin(k * X)";
+
+            _a = (double)nudA.Value;
             _k = (double)nudK.Value;
             drawFunction_base(lineFunc_SINX);
         }
         private void button5_Click(object sender, EventArgs e)
         {
+            textBox1.Text = "y = a / (k * X + b)";
+
             _a = (double)nudA.Value;
             _b = (double)nudB.Value;
             _k = (double)nudK.Value;
@@ -136,6 +145,7 @@ namespace drawfunctionn
         {
             var g = graphWind.CreateGraphics();
 
+            _redPen.Width = 3;
             int w = 0;
             var prevH = calcHeight(func, w, clip);
 
@@ -247,6 +257,8 @@ namespace drawfunctionn
         {
             var xFuncName = (string)xFuncSelector.SelectedItem;
             var yFuncName = (string)yFuncSelector.SelectedItem;
+           
+            textBox2.Text = (string)yFuncSelector.SelectedItem + " = " + (string)xFuncSelector.SelectedItem;
 
             if (xFuncName == null || yFuncName == null)
                 return;
