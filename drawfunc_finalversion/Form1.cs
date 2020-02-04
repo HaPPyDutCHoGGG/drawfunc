@@ -77,12 +77,15 @@ namespace drawfunctionn
             float ymax1 = graphWind.Height;
             g.DrawLine(myPen1, xmin1, ymin1, xmax1, ymax1);
 
+            textBox3.Text = "^Y";
+            textBox4.Text = ">X";
         }
 
         private double _xMin = -10;
         private double _xMax = 10;
         private double _yMin = -10;
         private double _yMax = 10;
+
 
         private void Button1_Click(object sender, EventArgs e)
         {
@@ -279,6 +282,8 @@ namespace drawfunctionn
             {
                 drawFunction(xFunc, ClipY.None);
             }
+            textBox3.Text = "^Y";
+            textBox4.Text = ">X";
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
