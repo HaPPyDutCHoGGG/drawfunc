@@ -61,24 +61,80 @@ namespace drawfunctionn
 
             // graphWind.Width
             // graphWind.Height
-
+            //axis X//
             Pen myPen = new Pen(Color.Black);
             float xmin = 0;
             float ymin = graphWind.Height / 2;
             float xmax = graphWind.Width;
             float ymax = graphWind.Height / 2;
             g.DrawLine(myPen, xmin, ymin, xmax, ymax);
-
-            //horizontal axis Y//
-            Pen myPen1 = new Pen(Color.Black);
+            
+            //axis Y//
+            _ = new Pen(Color.Black);
             float xmin1 = graphWind.Width / 2;
             float ymin1 = 0;
             float xmax1 = graphWind.Width / 2;
             float ymax1 = graphWind.Height;
-            g.DrawLine(myPen1, xmin1, ymin1, xmax1, ymax1);
+            g.DrawLine(myPen, xmin1, ymin1, xmax1, ymax1);
 
             textBox3.Text = "^Y";
             textBox4.Text = ">X";
+
+            //grid//
+            //horizontal//
+            _ = new Pen(Color.Gray);
+            float xmin2 = 0;
+            float y0 = graphWind.Height / 10;
+            float xmax2 = graphWind.Width;
+            g.DrawLine(myPen, xmin2, y0, xmax2, y0);          
+            
+            float y02 = (2 * graphWind.Height) / 10;        
+            g.DrawLine(myPen, xmin2, y02, xmax2, y02);         
+            
+            float y03 = (3 * graphWind.Height) / 10;
+            g.DrawLine(myPen, xmin2, y03, xmax2, y03);
+
+            float y04 = (4 * graphWind.Height) / 10;
+            g.DrawLine(myPen, xmin2, y04, xmax2, y04);
+
+            float y06 = (6 * graphWind.Height) / 10;
+            g.DrawLine(myPen, xmin2, y06, xmax2, y06);
+
+            float y07 = (7 * graphWind.Height) / 10;
+            g.DrawLine(myPen, xmin2, y07, xmax2, y07);
+
+            float y08 = (8 * graphWind.Height) / 10;
+            g.DrawLine(myPen, xmin2, y08, xmax2, y08);
+
+            float y09 = (9 * graphWind.Height) / 10;
+            g.DrawLine(myPen, xmin2, y09, xmax2, y09);
+
+            //vertical//
+            float ymin3 = 0;
+            float x1 = graphWind.Height / 10;
+            float ymax3 = graphWind.Width;
+            g.DrawLine(myPen, x1, ymin3, x1, ymax3);
+
+            float x12 = (2 * graphWind.Height) / 10;
+            g.DrawLine(myPen, x12, ymin3, x12, ymax3);
+
+            float x13 = (3 * graphWind.Height) / 10;
+            g.DrawLine(myPen, x13, ymin3, x13, ymax3);
+
+            float x14 = (4 * graphWind.Height) / 10;
+            g.DrawLine(myPen, x14, ymin3, x14, ymax3);
+
+            float x16 = (6 * graphWind.Height) / 10;
+            g.DrawLine(myPen, x16, ymin3, x16, ymax3);
+
+            float x17 = (7 * graphWind.Height) / 10;
+            g.DrawLine(myPen, x17, ymin3, x17, ymax3);
+            
+            float x18 = (8 * graphWind.Height) / 10;
+            g.DrawLine(myPen, x18, ymin3, x18, ymax3);
+            
+            float x19 = (9 * graphWind.Height) / 10;
+            g.DrawLine(myPen, x19, ymin3, x19, ymax3);
         }
 
         private double _xMin = -10;
